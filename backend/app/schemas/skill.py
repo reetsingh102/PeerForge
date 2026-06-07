@@ -1,0 +1,2 @@
+class SkillSchema:
+    pass
