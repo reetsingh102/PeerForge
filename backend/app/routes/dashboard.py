@@ -1,5 +1,10 @@
 from flask import Blueprint, jsonify
 
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt_identity
+)
+
 from app.models.user import User
 from app.models.career_advice import CareerAdvice
 
@@ -9,10 +14,15 @@ dashboard_bp = Blueprint(
 )
 
 @dashboard_bp.route(
-    "/dashboard/<int:user_id>",
+    "/dashboard",
     methods=["GET"]
 )
-def get_dashboard(user_id):
+@jwt_required()
+def get_dashboard():
+
+    user_id = int(
+        get_jwt_identity()
+    )
 
     user = User.query.get(user_id)
 

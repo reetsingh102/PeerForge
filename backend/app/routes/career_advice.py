@@ -1,4 +1,8 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt_identity
+)
 
 from app.models.career_advice import CareerAdvice
 from app.database.base import db
@@ -20,6 +24,7 @@ career_bp = Blueprint(
     "/career-advice",
     methods=["POST"]
 )
+@jwt_required()
 def career_advice():
 
     data = request.get_json()
@@ -38,12 +43,15 @@ def career_advice():
         generate_ai_advice(skills)
     )
 
+    user_id = int(
+        get_jwt_identity()
+    )
+
     advice_record = CareerAdvice(
-        user_id=1,
+        user_id=user_id,
         resume_text=resume_text,
         advice=ai_advice
     )
-
     db.session.add(
         advice_record
     )
