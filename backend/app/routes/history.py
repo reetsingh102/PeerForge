@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 
 from app.models.career_advice import CareerAdvice
 
@@ -11,6 +12,8 @@ history_bp = Blueprint(
     "/history",
     methods=["GET"]
 )
+@jwt_required()
+
 def get_history():
 
     records = CareerAdvice.query.all()

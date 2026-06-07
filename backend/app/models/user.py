@@ -14,6 +14,11 @@ class User(db.Model):
         nullable=False
     )
 
+    password = db.Column(
+        db.String(255),
+        nullable=False
+    )
+
     tokens = db.Column(
         db.Integer,
         default=0

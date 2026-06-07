@@ -24,8 +24,25 @@ def generate_ai_advice(skills):
     Keep it under 150 words.
     """
 
-    response = model.generate_content(
-        prompt
-    )
+    try:
 
-    return response.text
+        response = model.generate_content(
+            prompt
+        )
+
+        return response.text
+
+    except Exception as e:
+
+        print(f"Gemini Error: {e}")
+
+        return """
+        Career Advice:
+        Continue building backend projects and strengthen your Flask, Docker, and database skills.
+
+        Technologies to Learn:
+        FastAPI, PostgreSQL, and SQLAlchemy.
+
+        Project Idea:
+        Build a task management API with authentication and Docker deployment.
+        """
