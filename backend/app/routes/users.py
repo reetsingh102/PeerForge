@@ -1,14 +1,23 @@
 from flask import Blueprint, jsonify, request
 from app.models.user import User
-from app import db
+from app.database.base import db
 
 users_bp = Blueprint("users", __name__)
 
-users = []
-
 @users_bp.route("/users", methods=["GET"])
 def get_users():
-    return jsonify(users)
+
+    users = User.query.all()
+
+    return jsonify([
+        {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "tokens": user.tokens
+        }
+        for user in users
+    ])
 
 @users_bp.route("/users", methods=["POST"])
 def create_user():
@@ -26,8 +35,8 @@ def create_user():
     return jsonify({
         "message": "User Created",
         "user": {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email
+            "id": user.id,
+            "name": user.name,
+            "email": user.email
         }
     }), 201
